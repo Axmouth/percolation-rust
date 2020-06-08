@@ -18,21 +18,22 @@ mod percolation;
 mod weighted_union_find;
 
 fn main() {
-    let n = 25;
+    let rows: u32 = 30;
+    let cols: u32 = 50;
 
     // Change this to OpenGL::V2_1 if not working.
     let opengl = OpenGL::V3_2;
     // Create an Glutin window.
     let mut window: Window = WindowSettings::new(
         "Percolation Visualizer",
-        [(BLOCK_SIZE * n) as f64, (BLOCK_SIZE * n) as f64],
+        [(BLOCK_SIZE * cols) as f64, (BLOCK_SIZE * rows) as f64],
     )
     .graphics_api(opengl)
     .exit_on_esc(true)
     .build()
     .unwrap();
     // Create a new game and run it.
-    let mut game = PercolationGrid::new(opengl, n as u32);
+    let mut game = PercolationGrid::new(opengl, rows, cols);
 
     let mut events = Events::new(EventSettings::new()).ups(10);
     while let Some(e) = events.next(&mut window) {

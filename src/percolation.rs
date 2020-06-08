@@ -1,24 +1,26 @@
 use super::weighted_union_find::*;
 
 pub struct Percolation {
-    n: u32,
     uf_grid: WeightedUnionFind,
     uf_fullness: WeightedUnionFind,
     open_sites: u32,
     is_open_arr: Box<[bool]>,
+    rows: u32,
+    cols: u32,
 }
 
 impl Percolation {
-    pub fn new(n: u32) -> Self {
-        if n < 1 {
+    pub fn new(rows: u32, cols: u32) -> Self {
+        if rows < 1 || cols < 1 {
             panic!("n too small");
         }
         return Self {
-            uf_grid: WeightedUnionFind::new((n * n) + 2),
-            uf_fullness: WeightedUnionFind::new((n * n) + 1),
-            n,
+            uf_grid: WeightedUnionFind::new((rows * cols) + 2),
+            uf_fullness: WeightedUnionFind::new((rows * cols) + 1),
+            rows,
+            cols,
             open_sites: 0,
-            is_open_arr: (0..(n * n))
+            is_open_arr: (0..(rows * cols))
                 .into_iter()
                 .map(|_i: u32| -> bool {
                     return false;
@@ -27,20 +29,24 @@ impl Percolation {
         };
     }
 
-    pub fn get_n(&self) -> u32 {
-        return self.n;
+    pub fn get_rows(&self) -> u32 {
+        return self.rows;
+    }
+
+    pub fn get_cols(&self) -> u32 {
+        return self.cols;
     }
 
     fn get_entry_pseudo_element_index(&self) -> u32 {
-        return self.n * self.n;
+        return self.rows * self.cols;
     }
 
     fn get_exit_pseudo_element_index(&self) -> u32 {
-        return (self.n * self.n) + 1;
+        return (self.rows * self.cols) + 1;
     }
 
     fn convert_indice(&self, row: u32, col: u32) -> u32 {
-        return (row - 1) * self.n + col - 1;
+        return (row - 1) * self.cols + col - 1;
     }
 
     // opens the site (row, col) if it is not open already
@@ -48,7 +54,7 @@ impl Percolation {
         if self.is_open_arr[self.convert_indice(row, col) as usize] {
             return;
         }
-        if col < self.n && self.is_open(row, col + 1) {
+        if col < self.cols && self.is_open(row, col + 1) {
             self.uf_grid.union(
                 self.convert_indice(row, col),
                 self.convert_indice(row, col + 1),
@@ -78,7 +84,7 @@ impl Percolation {
                 self.convert_indice(row, col),
             );
         }
-        if row < self.n && self.is_open(row + 1, col) {
+        if row < self.rows && self.is_open(row + 1, col) {
             self.uf_grid.union(
                 self.convert_indice(row + 1, col),
                 self.convert_indice(row, col),
@@ -98,7 +104,7 @@ impl Percolation {
                 self.convert_indice(row, col),
             );
         }
-        if row == self.n {
+        if row == self.rows {
             self.uf_grid.union(
                 self.get_exit_pseudo_element_index(),
                 self.convert_indice(row, col),

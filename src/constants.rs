@@ -1,1 +1,1 @@
-pub static BLOCK_SIZE: i32 = 20;
+pub static BLOCK_SIZE: u32 = 20;
