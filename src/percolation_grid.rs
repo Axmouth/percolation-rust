@@ -17,16 +17,18 @@ pub struct PercolationGrid {
     rows: u32,
     cols: u32,
     block_size: u32,
+    automatic: bool,
 }
 
 impl PercolationGrid {
-    pub fn new(opengl: OpenGL, rows: u32, cols: u32) -> Self {
+    pub fn new(opengl: OpenGL, rows: u32, cols: u32, automatic: bool) -> Self {
         let grid = PercolationGrid {
             gl: GlGraphics::new(opengl),
             percolation: Percolation::new(rows, cols),
             block_size: BLOCK_SIZE,
             rows,
             cols,
+            automatic,
         };
 
         return grid;
@@ -74,6 +76,9 @@ impl PercolationGrid {
     }
 
     pub fn update(&mut self, _args: &UpdateArgs) {
+        if !self.automatic {
+            return;
+        }
         if !self.percolation.percolates() {
             self.open_random_site();
         }
@@ -91,8 +96,25 @@ impl PercolationGrid {
 
     pub fn open_random_site(&mut self) {
         let mut rng = rand::thread_rng();
-        let row = rng.gen_range(1.0, (self.rows + 1) as f64) as u32;
-        let col = rng.gen_range(1.0, (self.cols + 1) as f64) as u32;
+        loop {
+            let row = rng.gen_range(1.0, (self.rows + 1) as f64) as u32;
+            let col = rng.gen_range(1.0, (self.cols + 1) as f64) as u32;
+            if self.percolation.is_open(row, col) {
+                continue;
+            }
+            self.percolation.open(row, col);
+            break;
+        }
+    }
+
+    pub fn percolates(&mut self) -> bool {
+        return self.percolation.percolates();
+    }
+
+    pub fn open_site(&mut self, row: u32, col: u32) {
+        if self.percolation.is_open(row, col) {
+            return;
+        }
         self.percolation.open(row, col);
     }
 }
