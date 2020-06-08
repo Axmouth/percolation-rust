@@ -26,7 +26,7 @@ fn main() {
     let opengl = OpenGL::V3_2;
     // Create an Glutin window.
     let mut window: Window = WindowSettings::new(
-        "Snake Game",
+        "Percolation Visualizer",
         [(BLOCK_SIZE * n) as f64, (BLOCK_SIZE * n) as f64],
     )
     .graphics_api(opengl)
