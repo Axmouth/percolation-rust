@@ -18,7 +18,7 @@ mod percolation;
 mod weighted_union_find;
 
 fn main() {
-    let n = 50;
+    let n = 25;
 
     // Change this to OpenGL::V2_1 if not working.
     let opengl = OpenGL::V3_2;

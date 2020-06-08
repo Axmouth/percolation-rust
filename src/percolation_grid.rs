@@ -48,17 +48,6 @@ impl PercolationGrid {
 
         for i in 0..self.percolation.get_n() {
             for j in 0..self.percolation.get_n() {
-                if self.percolation.is_open(i + 1, j + 1) {
-                    let square = graphics::rectangle::square(
-                        (j as u32 * self.block_size) as f64,
-                        (i as u32 * self.block_size) as f64,
-                        20_f64,
-                    );
-                    self.gl.draw(args.viewport(), |c, gl| {
-                        let transform = c.transform;
-                        graphics::rectangle(WHITE, square, transform, gl);
-                    });
-                }
                 if self.percolation.is_full(i + 1, j + 1) {
                     let square = graphics::rectangle::square(
                         (j as u32 * self.block_size) as f64,
@@ -68,6 +57,18 @@ impl PercolationGrid {
                     self.gl.draw(args.viewport(), |c, gl| {
                         let transform = c.transform;
                         graphics::rectangle(LIGHT_BLUE, square, transform, gl);
+                    });
+                    continue;
+                }
+                if self.percolation.is_open(i + 1, j + 1) {
+                    let square = graphics::rectangle::square(
+                        (j as u32 * self.block_size) as f64,
+                        (i as u32 * self.block_size) as f64,
+                        20_f64,
+                    );
+                    self.gl.draw(args.viewport(), |c, gl| {
+                        let transform = c.transform;
+                        graphics::rectangle(WHITE, square, transform, gl);
                     });
                 }
             }
@@ -84,6 +85,10 @@ impl PercolationGrid {
 
     pub fn reset_grid_state(&mut self) {
         self.percolation = Percolation::new(self.n);
+    }
+
+    fn convert_indice(&self, row: u32, col: u32) -> u32 {
+        return row * self.n + col;
     }
 
     pub fn open_random_site(&mut self) {
