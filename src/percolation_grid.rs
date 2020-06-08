@@ -7,15 +7,12 @@ extern crate rand;
 use opengl_graphics::{GlGraphics, OpenGL};
 use piston::input::*;
 use rand::*;
-use std::collections::LinkedList;
-use std::iter::FromIterator;
 
 use super::constants::BLOCK_SIZE;
 use super::percolation::*;
 
 pub struct PercolationGrid {
     gl: GlGraphics, // OpenGL drawing backend.
-    direction_pressed: bool,
     percolation: Percolation,
     n: u32,
     grid_x: u32,
@@ -25,10 +22,8 @@ pub struct PercolationGrid {
 
 impl PercolationGrid {
     pub fn new(opengl: OpenGL, n: u32) -> Self {
-        let mut rng = rand::thread_rng();
         let grid = PercolationGrid {
             gl: GlGraphics::new(opengl),
-            direction_pressed: false,
             percolation: Percolation::new(n),
             n,
             block_size: BLOCK_SIZE as u32,
@@ -80,7 +75,7 @@ impl PercolationGrid {
     }
 
     pub fn update(&mut self, _args: &UpdateArgs) {
-        if (!self.percolation.percolates()) {
+        if !self.percolation.percolates() {
             self.open_random_site();
         }
     }

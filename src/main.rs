@@ -15,9 +15,7 @@ use percolation_grid::*;
 mod constants;
 use constants::BLOCK_SIZE;
 mod percolation;
-use percolation::*;
 mod weighted_union_find;
-use weighted_union_find::*;
 
 fn main() {
     let n = 50;

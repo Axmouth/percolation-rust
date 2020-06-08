@@ -20,7 +20,7 @@ impl Percolation {
             open_sites: 0,
             is_open_arr: (0..(n * n))
                 .into_iter()
-                .map(|i: u32| -> bool {
+                .map(|_i: u32| -> bool {
                     return false;
                 })
                 .collect(),
