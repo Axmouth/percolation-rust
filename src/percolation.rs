@@ -31,15 +31,6 @@ impl Percolation {
         return self.n;
     }
 
-    fn validate_inputs(&self, row: u32, col: u32) {
-        if row > self.n || col > self.n {
-            panic!("Illegal arguments, too big");
-        }
-        if row < 1 || col < 1 {
-            panic!("Illegal arguments, too small");
-        }
-    }
-
     fn get_entry_pseudo_element_index(&self) -> u32 {
         return self.n * self.n;
     }
@@ -49,13 +40,11 @@ impl Percolation {
     }
 
     fn convert_indice(&self, row: u32, col: u32) -> u32 {
-        self.validate_inputs(row, col);
         return (row - 1) * self.n + col - 1;
     }
 
     // opens the site (row, col) if it is not open already
     pub fn open(&mut self, row: u32, col: u32) {
-        self.validate_inputs(row, col);
         if self.is_open_arr[self.convert_indice(row, col) as usize] {
             return;
         }
@@ -121,13 +110,11 @@ impl Percolation {
 
     // is the site (row, col) open?
     pub fn is_open(&self, row: u32, col: u32) -> bool {
-        self.validate_inputs(row, col);
         return self.is_open_arr[self.convert_indice(row, col) as usize];
     }
 
     // is the site (row, col) full?
     pub fn is_full(&mut self, row: u32, col: u32) -> bool {
-        self.validate_inputs(row, col);
         if !self.is_open_arr[self.convert_indice(row, col) as usize] {
             return false;
         }
