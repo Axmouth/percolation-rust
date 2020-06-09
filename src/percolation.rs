@@ -12,7 +12,7 @@ pub struct Percolation {
 impl Percolation {
     pub fn new(rows: u32, cols: u32) -> Self {
         if rows < 1 || cols < 1 {
-            panic!("n too small");
+            panic!("Row too small");
         }
         return Self {
             uf_grid: WeightedUnionFind::new((rows * cols) + 2),

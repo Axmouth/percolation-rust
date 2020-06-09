@@ -55,7 +55,7 @@ fn create_grid(rows: u32, cols: u32, automatic: bool) {
                 } else {
                     grid.open_site(row, col);
                     if grid.percolates() {
-                        println!("The system now percolates!");
+                        println!("Percolation achieved!");
                     }
                 }
             }
@@ -85,6 +85,7 @@ fn get_rows_cols_from_input() -> (u32, u32) {
 
     print!("What is the row number?: ");
     loop {
+        rows = String::new();
         read(&mut rows);
         match rows.trim().parse() {
             Err(_err) => {
@@ -104,6 +105,7 @@ fn get_rows_cols_from_input() -> (u32, u32) {
 
     print!("What is the column number?: ");
     loop {
+        cols = String::new();
         read(&mut cols);
         match cols.trim().parse() {
             Err(_err) => {
